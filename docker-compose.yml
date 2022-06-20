@@ -1,0 +1,36 @@
+version: '3.3'
+services:
+  backend-env:
+    build: .
+    depends_on:
+      - redis
+      - typesense
+      - postgres
+    networks:
+      - default
+  typesense:
+    image: "typesense/typesense:0.22.2"
+    ports:
+      - "8108:8108"
+    networks:
+      - default
+    volumes:
+      - "~/docker-env/data/typesense:/data/typesence"
+  redis:
+    volumes:
+      - '~/docker-env/data/redis:/data/redis'
+    image: "redis:5.0.7-alpine"
+    ports:
+      - "6379:6379"
+    networks:
+      - default
+  postgres:
+    environment:
+      - POSTGRES_PASSWORD=lxd335388
+    image: "postgres:12.1-alpine"
+    ports:
+      - "5432:5432"
+    networks:
+      - default
+networks:
+  default:
